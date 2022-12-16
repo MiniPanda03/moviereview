@@ -1,0 +1,15 @@
+<h1>Actors</h1>
+
+<table border="1">
+{% for x in actors %}
+<tr>
+<td>{{ x.id }}</td>
+<td>{{ x.Name }}</td>
+<td>{{ x.Surname }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<p>
+<a href="add/">Add actor</a>
+</p>

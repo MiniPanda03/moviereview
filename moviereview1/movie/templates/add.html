@@ -1,0 +1,12 @@
+<h1>Add actor</h1>
+
+<form action="addrecord/" method="post">
+{% csrf_token %}
+Name:<br>
+<input name="name">
+<br><br>
+Surname:<br>
+<input name="surname">
+<br><br>
+<input type="submit" value="Submit">
+</form>
