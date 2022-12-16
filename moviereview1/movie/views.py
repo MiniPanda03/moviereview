@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-from .models import Actor
+from .models import Actor, Director
+from rest_framework import viewsets
+from .sterializers import DirectorSerializer, ActorSerializer
 
 def index(request):
     actor = Actor.objects.all().values()
@@ -22,3 +24,13 @@ def addrecord(request):
   member = Actor(Name=name, Surname=surname)
   member.save()
   return HttpResponseRedirect(reverse('index'))
+
+
+class ActorViewSet(viewsets.ModelViewSet):
+    queryset = Actor.objects.all()
+    serializer_class = ActorSerializer
+
+
+class DirectorViewSet(viewsets.ModelViewSet):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
