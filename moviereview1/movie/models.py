@@ -13,17 +13,12 @@ class Movie (models.Model):
     Name =  models.CharField(max_length=255)
     Description = models.CharField(max_length=500)
     Slug = models.SlugField(max_length=40)
-    Director_id = models.ForeignKey(Director,null=True,on_delete=models.SET_NULL)
-    Avg_raiting = models.DecimalField(max_digits=5,decimal_places=2)
+    Director_id = models.ManyToManyField(Director)
+    Actor_id = models.ManyToManyField(Actor)
     created = models.DateTimeField()
     updated = models.DateTimeField()
-    raitingAmount = models.IntegerField()
 
 
-
-class Actors (models.Model):
-    Movie_id = models.ForeignKey(Movie,on_delete=models.CASCADE)
-    Actor_id = models.ForeignKey(Actor,on_delete=models.CASCADE)
 
 class Raiting(models.Model):
     raitingValue = models.IntegerField()
