@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import Actor,Movie,Director, Rating
+from rest_framework.authtoken.admin import TokenAdmin
 
+
+TokenAdmin.raw_id_fields = ['user']
 
 class ActorAdmin(admin.ModelAdmin):
     fields = ['Name', 'Surname']
@@ -17,8 +20,8 @@ class DirectorAdmin(admin.ModelAdmin):
 
 
 class MovieAdmin(admin.ModelAdmin):
-    fields = ['Title','Description','Slug','get_directors','get_actors','created','updated']
-    list_display = ['Title','Description','Slug','get_directors','get_actors','created','updated']
+    fields = ['Title','Description','Slug','Director_id','Actor_id']
+    list_display = ['Title','Description','Slug','get_directors','get_actors']
     prepopulated_fields = {"Slug": ("Title",)}
     list_filter = ['Title']
 

@@ -2,7 +2,10 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from .models import Actor, Director, Movie, Rating
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
+
+UserModel = get_user_model()
 
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,6 +28,19 @@ class MovieSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+
+    password = serializers.CharField(write_only=True)
+
+    def create(self, validated_data):
+
+        user = UserModel.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password'],
+        )
+
+        return user
+
+
     class Meta:
         model = User
         fields = ('id', 'username','password')

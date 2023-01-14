@@ -29,5 +29,5 @@ urlpatterns = [
     path('add/', views.add, name='add'),
     path('add/addrecord/', views.addrecord, name='addrecord'),
     path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-token-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
