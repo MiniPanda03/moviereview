@@ -18,8 +18,11 @@ from rest_framework import routers
 from django.urls import include, path
 
 router = routers.DefaultRouter()
-router.register(r'Director', views.DirectorViewSet)
-router.register(r'Actor', views.ActorViewSet)
+router.register('Director', views.DirectorViewSet)
+router.register('Actor', views.ActorViewSet)
+router.register('Movie',views.MovieViewSet)
+router.register('Rating',views.RatingViewSet)
+router.register('User',views.UserViewSet)
 
 urlpatterns = [
     path('', views.index, name='index'),

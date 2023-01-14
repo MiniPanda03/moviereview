@@ -17,10 +17,10 @@ class DirectorAdmin(admin.ModelAdmin):
 
 
 class MovieAdmin(admin.ModelAdmin):
-    fields = ['Name','Description','Slug','get_directors','get_actors','created','updated']
-    list_display = ['Name','Description','Slug','get_directors','get_actors','created','updated']
-    prepopulated_fields = {"Slug": ("Name",)}
-    list_filter = ['Name']
+    fields = ['Title','Description','Slug','get_directors','get_actors','created','updated']
+    list_display = ['Title','Description','Slug','get_directors','get_actors','created','updated']
+    prepopulated_fields = {"Slug": ("Title",)}
+    list_filter = ['Title']
 
 class RatingAdmin(admin.ModelAdmin):
     fields = ['movie_id','user_id','ratingValue']

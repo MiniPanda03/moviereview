@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-from .models import Actor, Director
+from .models import Actor, Director,Movie,Rating
+from django.contrib.auth.models import User
 from rest_framework import viewsets
-from .serializers import DirectorSerializer, ActorSerializer
+from .serializers import DirectorSerializer, ActorSerializer,UserSerializer,MovieSerializer,RatingSerializer
 
 def index(request):
     actor = Actor.objects.all().values()
@@ -34,3 +35,16 @@ class ActorViewSet(viewsets.ModelViewSet):
 class DirectorViewSet(viewsets.ModelViewSet):
     queryset = Director.objects.all()
     serializer_class = DirectorSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+
+class RatingViewSet(viewsets.ModelViewSet):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
