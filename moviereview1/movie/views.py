@@ -4,7 +4,7 @@ from django.template import loader
 from django.urls import reverse
 from .models import Actor, Director
 from rest_framework import viewsets
-from .sterializers import DirectorSerializer, ActorSerializer
+from .serializers import DirectorSerializer, ActorSerializer
 
 def index(request):
     actor = Actor.objects.all().values()
