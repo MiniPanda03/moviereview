@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from rest_framework.response import Response
@@ -21,6 +22,7 @@ def add(request):
   template = loader.get_template('add.html')
   return HttpResponse(template.render({}, request))
 
+@login_required
 def addrecord(request):
   name = request.POST['name']
   surname = request.POST['surname']
@@ -28,38 +30,6 @@ def addrecord(request):
   member.save()
   return HttpResponseRedirect(reverse('index'))
 
-def create(request):
-    return 0
-
-def update(request):
-    return 0
-
-def get_all_movies(request):
-    movie = Movie.objects.all().values()
-    template = loader.get_template('index.html')
-    context = {
-        'Movie': movie,
-    }
-    return HttpResponse(template.render(context, request))
-
-def filter_by_title(request):
-    mydata = Movie.objects.filter(Movie_Title='')
-    template = loader.get_template('index.html')
-    context = {
-        'Movies': mydata,
-    }
-    return HttpResponse(template.render(context, request))
-
-def get_by_title(request):
-    mydata = Movie.objects.values_list('firstname')
-    template = loader.get_template('template.html')
-    context = {
-        'mymembers': mydata,
-    }
-    return HttpResponse(template.render(context, request))
-
-def order_by_mean_rating(request):
-    return 0
 
 class ActorViewSet(viewsets.ModelViewSet):
     queryset = Actor.objects.all()
@@ -124,6 +94,8 @@ class DirectorViewSet(viewsets.ModelViewSet):
             response = {'Ups': 'Coś poszło nie tak'}
             return Response(response, status=stat.HTTP_400_BAD_REQUEST)
 
+
+@login_required
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
