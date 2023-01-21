@@ -102,7 +102,7 @@ class DirectorViewSet(viewsets.ModelViewSet):
             name = request.data.get('Name')
             surname = request.data.get('Surname')
             director = Director.objects.create(Name=name,Surname=surname)
-            serializer = ActorSerializer(director, many=False)
+            serializer = DirectorSerializer(director, many=False)
             response = {'Yay': 'Reżyser dodany', 'Wynik': serializer.data}
             return Response(response,status=stat.HTTP_201_CREATED)
         except:
@@ -111,13 +111,13 @@ class DirectorViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk=None, *args, **kwargs):
         try:
-            diector_object = Director.objects.get(id=pk)
+            director_object = Director.objects.get(id=pk)
             director_data = request.data
-            diector_object.name = director_data.get('name')
-            diector_object.surname = director_data.get('surname')
+            director_object.name = director_data.get('name')
+            director_object.surname = director_data.get('surname')
 
-            diector_object.save()
-            serializers = DirectorSerializer(diector_object, many=False)
+            director_object.save()
+            serializers = DirectorSerializer(director_object, many=False)
             response = {'Yay': 'Update udany', 'Wynik': serializers.data}
             return Response(response, status=stat.HTTP_200_OK)
         except:
@@ -130,10 +130,43 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 
-
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
+    @staticmethod
+    def get_or_create_actor(actors_request):
+        actors = []
+        for actor in actors_request:
+            name,surname = Actor.objects.get_or_create(Name=actor['Name'],Surname=actor['Surname'])
+            actors.append(name,surname)
+        return actors
+
+    @staticmethod
+    def get_or_create_director(director_request):
+        directors = []
+        for director in director_request:
+            name,surname = Director.objects.get_or_create(Name=director['Name'],Surname=director['Surname'])
+            directors.append(name,surname)
+        return directors
+
+
+    def create(self, request, *args, **kwargs):
+        try:
+            title = request.data.get('Title')
+            description = request.data.get('Description')
+            slug= request.data.get('slug')
+            directors= request.data.pop('Director_id', [])
+            actors = request.data.pop('Actor_id', [])
+            movie = Movie.objects.create(Title=title,Description=description,Slug=slug)
+            movie.Actor_id.set(self.get_or_create_actor(actors))
+            movie.Director_id.set(self.get_or_create_director(directors))
+            serializer = MovieSerializer(movie, many=False)
+            response = {'Yay': 'Film dodany', 'Wynik': serializer.data}
+            return Response(response,status=stat.HTTP_201_CREATED)
+        except:
+            response = {'Ups': 'Coś poszło nie tak'}
+            return Response(response, status=stat.HTTP_400_BAD_REQUEST)
 
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = Rating.objects.all()
